@@ -1,14 +1,3 @@
-"""AI Home Renovation Planner - Coordinator/Dispatcher Pattern with Multimodal Vision
-
-This demonstrates ADK's Coordinator/Dispatcher Pattern with Gemini 2.5 Flash's multimodal
-capabilities where a routing agent analyzes requests and delegates to specialists:
-
-- General questions → Quick info agent
-- Renovation planning → Full planning pipeline (Sequential Agent with 3 vision-enabled specialists)
-
-Pattern Reference: https://google.github.io/adk-docs/agents/multi-agents/#coordinator-dispatcher-pattern
-"""
-
 from google.adk.agents import LlmAgent, SequentialAgent
 from google.adk.tools import google_search
 from google.adk.tools.agent_tool import AgentTool
