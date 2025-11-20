@@ -1,4 +1,3 @@
-````markdown
 # 🏠 AI Home Renovation Planner
 
 **Your Personal Digital Architect: Visualizing Dreams, Planning Reality.**
@@ -7,11 +6,11 @@ An intelligent, multi-agent system that acts as your personal interior designer.
 
 ## 🚀 Features
 
-* **👁️ Visual Analysis:** Upload photos of your current room. The **Visual Assessor Agent** analyzes dimensions, materials, and current condition.
-* **🧠 Intelligent Planning:** The **Design Planner Agent** creates detailed material lists, cost estimates (based on room type & scope), and construction timelines.
-* **🎨 Photorealistic Rendering:** The **Project Coordinator** generates high-fidelity "After" images of your renovated space using Gemini Imagen.
-* **🔄 Iterative Editing:** Ask the **Rendering Editor** to tweak specific details (e.g., *"Change the cabinets to navy blue"*) naturally.
-* **📂 Smart Image Management:** Categorize uploads as "Current Room" or "Inspiration" to guide the AI's design process via the Streamlit sidebar.
+- **👁️ Visual Analysis:** Upload photos of your current room. The **Visual Assessor Agent** analyzes dimensions, materials, and current condition.
+- **🧠 Intelligent Planning:** The **Design Planner Agent** creates detailed material lists, cost estimates (based on room type & scope), and construction timelines.
+- **🎨 Photorealistic Rendering:** The **Project Coordinator** generates high-fidelity "After" images of your renovated space using Gemini Imagen.
+- **🔄 Iterative Editing:** Ask the **Rendering Editor** to tweak specific details (e.g., _"Change the cabinets to navy blue"_) naturally.
+- **📂 Smart Image Management:** Categorize uploads as "Current Room" or "Inspiration" to guide the AI's design process via the Streamlit sidebar.
 
 ---
 
@@ -20,27 +19,28 @@ An intelligent, multi-agent system that acts as your personal interior designer.
 This project implements the **Coordinator-Dispatcher Pattern**. A central "Root Agent" analyzes user intent and routes tasks to specialized sub-agents.
 
 ### The Agent Team
+
 1.  **Root Agent (Coordinator):** The traffic controller. It analyzes your request and routes it to the correct specialist:
-    * *General Chat* → Info Agent
-    * *Design Changes* → Rendering Editor
-    * *New Projects* → Planning Pipeline
+    - _General Chat_ → Info Agent
+    - _Design Changes_ → Rendering Editor
+    - _New Projects_ → Planning Pipeline
 2.  **Info Agent:** Handles general Q&A and greetings.
 3.  **Rendering Editor:** Specialized in refining existing generated images based on specific user feedback.
 4.  **Planning Pipeline (Sequential Agent):**
-    * **Step 1: Visual Assessor:** Uses computer vision to analyze uploaded images for room type, style, and constraints.
-    * **Step 2: Design Planner:** Generates the specs, budget, and timeline based on the visual data.
-    * **Step 3: Project Coordinator:** Synthesizes the plan and calls the image generation tool.
+    - **Step 1: Visual Assessor:** Uses computer vision to analyze uploaded images for room type, style, and constraints.
+    - **Step 2: Design Planner:** Generates the specs, budget, and timeline based on the visual data.
+    - **Step 3: Project Coordinator:** Synthesizes the plan and calls the image generation tool.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** [Streamlit](https://streamlit.io/)
-* **Orchestration:** [Google ADK (Agent Development Kit)](https://github.com/google/adk)
-* **AI Models:**
-    * **Logic & Vision:** Google Gemini 2.5 Flash
-    * **Image Generation:** Google Gemini 2.5 Flash Image (Imagen)
-* **Language:** Python 3.10+
+- **Frontend:** [Streamlit](https://streamlit.io/)
+- **Orchestration:** [Google ADK (Agent Development Kit)](https://github.com/google/adk)
+- **AI Models:**
+  - **Logic & Vision:** Google Gemini 2.5 Flash
+  - **Image Generation:** Google Gemini 2.5 Flash Image (Imagen)
+- **Language:** Python 3.10+
 
 ---
 
@@ -49,10 +49,11 @@ This project implements the **Coordinator-Dispatcher Pattern**. A central "Root 
 Follow these steps to set up the project locally.
 
 ### 1. Clone the repository
+
 ```bash
 git clone [https://github.com/Ahmed-Islam-AI/Agentic-AI-Home-Renovation-Planner.git](https://github.com/Ahmed-Islam-AI/Agentic-AI-Home-Renovation-Planner.git)
 cd Agentic-AI-Home-Renovation-Planner
-````
+```
 
 ### 2\. Create a virtual environment
 
@@ -86,7 +87,7 @@ GOOGLE_API_KEY=your_actual_api_key_here
 GEMINI_API_KEY=your_actual_api_key_here
 ```
 
------
+---
 
 ## ▶️ Usage
 
@@ -101,12 +102,12 @@ GEMINI_API_KEY=your_actual_api_key_here
 
 3.  **How to use:**
 
-      * **Upload:** Go to the sidebar and upload a photo of your room. Categorize it as "Current Room".
-      * **Plan:** Type a command like: *"Plan a modern renovation for this kitchen. I want white cabinets."*
-      * **Result:** The AI will analyze the image, provide a cost estimate, and generate a new image of the renovated room.
-      * **Edit:** Don't like the floor? Just say: *"Change the flooring to dark wood."*
+    - **Upload:** Go to the sidebar and upload a photo of your room. Categorize it as "Current Room".
+    - **Plan:** Type a command like: _"Plan a modern renovation for this kitchen. I want white cabinets."_
+    - **Result:** The AI will analyze the image, provide a cost estimate, and generate a new image of the renovated room.
+    - **Edit:** Don't like the floor? Just say: _"Change the flooring to dark wood."_
 
------
+---
 
 ## 📂 Project Structure
 
@@ -120,7 +121,7 @@ GEMINI_API_KEY=your_actual_api_key_here
 └── README.md          # Documentation
 ```
 
------
+---
 
 ## 🤝 Contributing
 
@@ -135,6 +136,3 @@ Contributions are welcome\! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
-
-```
-```
