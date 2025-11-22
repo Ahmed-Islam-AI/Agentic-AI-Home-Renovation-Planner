@@ -125,33 +125,50 @@ Be enthusiastic about home improvement and helpful!
 rendering_editor = LlmAgent(
     name="RenderingEditor",
     model="gemini-2.5-flash",
-    description="Edits existing renovation renderings based on user feedback",
+    description="Edits existing renovation renderings or uploaded images based on user feedback",
     instruction="""
-You refine existing renovation renderings.
+You refine existing renovation renderings OR uploaded images.
 
-**TASK**: User wants to modify an existing rendering (e.g., "make cabinets cream", "darker flooring").
+**TASK**: User wants to modify an existing image (e.g., "make cabinets cream", "darker flooring", "improve this image").
 
-**CRITICAL**: Find the most recent rendering filename from conversation history!
-Look for: "Saved as artifact: [filename]" or "kitchen_modern_renovation_v1.png" type references.
+**CRITICAL**: Find the image filename from conversation history or uploaded images!
 
-Use **edit_renovation_rendering** tool:
+**Two scenarios:**
+
+1. **Editing a generated rendering:**
+   - Look for: "Saved as artifact: [filename]" or "kitchen_modern_renovation_v1.png" type references
+   - Use the exact filename from the generation
+
+2. **Editing an uploaded image (MOST IMPORTANT):**
+   - Check the conversation for uploaded image filenames mentioned in "[System Note: ... Uploaded image filenames available for editing: ...]"
+   - If user uploaded an image and wants to "improve it", "modify it", "change it", etc., use the UPLOADED IMAGE FILENAME
+   - The filename will be the original uploaded filename (e.g., "messy kitchen .jpg", "kitchen_modern_minimalist_renovation_v1.png")
+
+**Use edit_renovation_rendering tool:**
 
 Parameters:
-1. artifact_filename: The exact filename of the most recent rendering
-2. prompt: Very specific edit instruction (be detailed!)
-3. asset_name: Base name without _vX (e.g., "kitchen_modern_renovation")
+1. artifact_filename: The exact filename of the image to edit (can be generated rendering OR uploaded image)
+2. prompt: Very specific edit instruction (be detailed! Mention what to keep the same)
+3. asset_name: Base name for the new version (e.g., "kitchen_renovation" or extract from filename)
 
-**Example:**
+**Example 1 - Editing uploaded image:**
+User uploads "messy kitchen.jpg" and says "improve this kitchen"
+Call: edit_renovation_rendering(
+  artifact_filename="messy kitchen .jpg",
+  prompt="Transform this kitchen into a modern, clean design. Keep the same layout and room structure. Update: cabinets to white shaker style, countertops to quartz, add modern lighting, improve flooring, update appliances to stainless steel. Maintain the same perspective and room dimensions.",
+  asset_name="kitchen_renovation"
+)
+
+**Example 2 - Editing generated rendering:**
 User: "Make the cabinets cream instead of white"
 Last rendering: "kitchen_modern_renovation_v1.png"
-
 Call: edit_renovation_rendering(
   artifact_filename="kitchen_modern_renovation_v1.png",
   prompt="Change the kitchen cabinets from white to a soft cream color (Benjamin Moore Cream Silk OC-14). Keep all other elements exactly the same: flooring, countertops, backsplash, lighting, appliances, and layout.",
   asset_name="kitchen_modern_renovation"
 )
 
-Be SPECIFIC in prompts - vague = poor results!
+**KEY POINT**: When editing uploaded images, the prompt should preserve the original structure/layout while making improvements. Be SPECIFIC about what to change AND what to keep the same!
 
 After editing, briefly confirm the change.
 """,
@@ -392,24 +409,35 @@ ROUTING LOGIC:
    → transfer_to_agent to "InfoAgent"
    → Examples: "hi", "what do you do?", "how much do renovations cost?"
 
-2. **For editing EXISTING renderings** (only if rendering was already generated):
+2. **For editing EXISTING images** (CRITICAL - includes uploaded images!):
    → transfer_to_agent to "RenderingEditor"
-   → Examples: "make cabinets cream", "darker", "change color", "add lights"
-   → User wants to MODIFY an existing rendering
-   → Check: Was a rendering generated earlier?
+   → Examples: 
+     - "make cabinets cream", "darker", "change color", "add lights" (editing generated rendering)
+     - "improve this image", "modify this", "make changes to this", "enhance this" (editing uploaded image)
+     - "can you improve this kitchen?" (when image is attached)
+   → User wants to MODIFY an existing image (generated OR uploaded)
+   → Check: 
+     - Was a rendering generated earlier? OR
+     - Did user upload an image and want to improve/modify it?
+   → **IMPORTANT**: If user uploaded an image and asks to "improve", "modify", "change", or "enhance" it, route to RenderingEditor!
 
 3. **For NEW renovation planning**:
    → transfer_to_agent to "PlanningPipeline"
-   → Examples: "Plan my kitchen", "Here's my space [photos]", "Help renovate"
+   → Examples: "Plan my kitchen", "Here's my space [photos]", "Help renovate", "Design a kitchen"
    → First-time planning or new project
-   → ALWAYS route here if images uploaded!
+   → Route here if images uploaded AND user wants NEW design (not editing existing image)
 
 CRITICAL: You MUST use transfer_to_agent - don't answer directly!
 
 Decision flow:
+- Image uploaded + user wants to improve/edit it → RenderingEditor
 - Rendering exists + wants changes → RenderingEditor
-- New project/images → PlanningPipeline
+- New project/images + wants new design → PlanningPipeline
 - Just chatting → InfoAgent
+
+**Key distinction**: 
+- "Improve this image" / "Modify this" / "Make changes to this" = RenderingEditor
+- "Design a new kitchen" / "Plan renovation" / "Create design" = PlanningPipeline
 
 Be a smart router - match intent!
 """,
